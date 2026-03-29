@@ -38,8 +38,27 @@ if [[ "$BUILD_IOS" != "1" ]]; then
     "
 
   if [[ $TARGET_VERSION -eq 21 ]]; then
-    platform_args+="--build=x86_64-unknown-linux-gnu \
-    "
+    platform_args+="--build=x86_64-unknown-linux-gnu "
+  elif [[ $TARGET_VERSION -eq 25 ]] && [[ "$TARGET_JDK" == "x86_64" ]]; then
+    platform_args+="--build=x86_64-unknown-linux-gnu "
+  fi
+
+  if [[ $TARGET_VERSION -eq 25 ]] && [[ "$TARGET_JDK" == "x86_64" ]]; then
+    # Keep BUILD_* on host tools. The Android x86_64 wrapper breaks adlc when
+    # configure reuses it for build-time binaries.
+    host_cc=$(command -v clang || command -v gcc)
+    host_cxx=$(command -v clang++ || command -v g++)
+    export BUILD_CC="$host_cc"
+    export BUILD_CXX="$host_cxx"
+    export BUILD_LD="$BUILD_CC"
+    export BUILD_LDCXX="$BUILD_CXX"
+    export BUILD_AS="$BUILD_CC"
+    export BUILD_AR="$(command -v ar)"
+    export BUILD_NM="$(command -v nm)"
+    export BUILD_OBJCOPY="$(command -v objcopy)"
+    export BUILD_STRIP="$(command -v strip)"
+    export BUILD_SYSROOT_CFLAGS=
+    export BUILD_SYSROOT_LDFLAGS=
   fi
 
   platform_args+="OBJCOPY=${OBJCOPY} \
