@@ -1,6 +1,6 @@
 # angelauramc-openjdk-build 
 
-**This branch is for OpenJDK 17, 21 and staged Java 25 work.**
+**This branch is for OpenJDK 17, 21 and Java 25 work.**
 
 Based on [Java for Android](http://openjdk.java.net/projects/mobile/android.html) and [the PojavLauncher variant](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch)
 
@@ -16,7 +16,8 @@ Based on [Java for Android](http://openjdk.java.net/projects/mobile/android.html
 #### iOS
 - Install latest Xcode on your Mac.
 - If building JDK 17, install JDK 17. For 21, install JDK 21. For 25, install JDK 25.
-- Java 25 on iOS is currently staged from the Java 21 iOS patch set and should be treated as experimental until the `jdk25u` iOS patch port is verified.
+- Java 25 on iOS now uses a dedicated `jdk25u` patch set as the default patch path.
+- `patches/jre_25/ios-experimental/2_mirror_mapping.diff` remains opt-in. Enable it with `ENABLE_IOS_EXPERIMENTAL_PATCHES=1` if you explicitly want to test the mirror-mapped code cache work.
 
 ### Platform and architecture specific environment variables
 <table>
@@ -63,6 +64,7 @@ Based on [Java for Android](http://openjdk.java.net/projects/mobile/android.html
 ### Run in this directory:
 ```
 export BUILD_IOS=1 # only when targeting iOS, default is 0 (target Android)
+export ENABLE_IOS_EXPERIMENTAL_PATCHES=1 # optional, only for the experimental iOS mirror-mapping patch set
 
 export BUILD_FREETYPE_VERSION=[2.6.2/.../2.10.4] # default: 2.10.4
 export JDK_DEBUG_LEVEL=[release/fastdebug/debug] # default: release

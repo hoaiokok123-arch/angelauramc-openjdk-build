@@ -88,12 +88,35 @@ ln -s -f $CUPS_DIR/cups $ANDROID_INCLUDE/
 cd openjdk-${TARGET_VERSION}
 
 # Apply patches
+apply_patch_dir() {
+  local patch_dir="$1"
+  local patch_label="$2"
+  local patch
+
+  if [[ ! -d "$patch_dir" ]]; then
+    return 0
+  fi
+
+  while IFS= read -r patch; do
+    [[ -z "$patch" ]] && continue
+    echo "Applying $patch"
+    git apply --3way --reject --whitespace=fix "$patch" || {
+      echo "git apply failed (${patch_label})"
+      exit 1
+    }
+  done < <(find "$patch_dir" -name "*.diff" -print | LC_ALL=C sort)
+}
+
 git add .
 git reset --hard
 if [[ "$BUILD_IOS" != "1" ]]; then
-  find ../patches/jre_${TARGET_VERSION}/android -name "*.diff" -print0 | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply --3way --reject --whitespace=fix {} || (echo "git apply failed (Android patch set)" && exit 1)'
+  apply_patch_dir "../patches/jre_${TARGET_VERSION}/android" "Android patch set"
 else
-  find ../patches/jre_${TARGET_VERSION}/ios -name "*.diff" -print0 | sort -z | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply --3way --reject --whitespace=fix {} || (echo "git apply failed (iOs patch set)" && exit 1)'
+  apply_patch_dir "../patches/jre_${TARGET_VERSION}/ios" "iOS patch set"
+
+  if [[ "${ENABLE_IOS_EXPERIMENTAL_PATCHES}" == "1" ]]; then
+    apply_patch_dir "../patches/jre_${TARGET_VERSION}/ios-experimental" "iOS experimental patch set"
+  fi
 
   # Hack: exclude building macOS stuff
   desktop_mac=src/java.desktop/macosx
