@@ -1,0 +1,16 @@
+diff --git a/make/modules/java.desktop/Lib.gmk b/make/modules/java.desktop/Lib.gmk
+index 8e4ddf3df..2bb89efa5 100644
+--- a/make/modules/java.desktop/Lib.gmk
++++ b/make/modules/java.desktop/Lib.gmk
+@@ -71,9 +71,9 @@ ifeq ($(call isTargetOs, aix), false)
+       LIBS_linux := $(ALSA_LIBS), \
+       LIBS_macosx := \
+           $(if $(filter true,$(call isTargetOsEnv, ios)), \
+-              -framework AVFoundation, ) \
++              -framework AVFoundation, \
++              -framework AudioUnit) \
+           -framework AudioToolbox \
+-          -framework AudioUnit \
+           -framework CoreAudio \
+           -framework CoreFoundation \
+           -framework CoreMIDI \
