@@ -161,6 +161,9 @@ jobs=4
 
 if [[ "$BUILD_IOS" == "1" ]]; then
   jobs=$(sysctl -n hw.ncpu)
+elif [[ "$TARGET_VERSION" -eq 25 ]] && [[ "$TARGET_JDK" == "x86_64" ]]; then
+  # JDK 25 x86_64 Android intermittently races while generating adlc output.
+  jobs=1
 else
   jobs=$(nproc)
 fi
