@@ -68,7 +68,7 @@ else
     ln -s -f /usr/local/include/fontconfig $ANDROID_INCLUDE/
   fi
   platform_args="--with-toolchain-type=clang --with-sysroot=$(xcrun --sdk iphoneos --show-sdk-path) \
-    --with-boot-jdk=$(/usr/libexec/java_home -v $TARGET_VERSION) \
+    --with-boot-jdk=${JAVA_HOME:-$(/usr/libexec/java_home -v $TARGET_VERSION)} \
     --with-freetype=bundled \
     "
   AUTOCONF_x11arg="--with-x=/opt/X11/include/X11 --prefix=/usr/lib"
@@ -91,9 +91,9 @@ cd openjdk-${TARGET_VERSION}
 git add .
 git reset --hard
 if [[ "$BUILD_IOS" != "1" ]]; then
-  find ../patches/jre_${TARGET_VERSION}/android -name "*.diff" -print0 | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply  --reject --whitespace=fix {} || (echo "git apply failed (Android patch set)" && exit 1)' 
+  find ../patches/jre_${TARGET_VERSION}/android -name "*.diff" -print0 | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply --3way --reject --whitespace=fix {} || (echo "git apply failed (Android patch set)" && exit 1)'
 else
-  find ../patches/jre_${TARGET_VERSION}/ios -name "*.diff" -print0 | sort -z | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply --reject --whitespace=fix {} || (echo "git apply failed (iOs patch set)" && exit 1)' 
+  find ../patches/jre_${TARGET_VERSION}/ios -name "*.diff" -print0 | sort -z | xargs -0 -I {} sh -c 'echo "Applying {}" && git apply --3way --reject --whitespace=fix {} || (echo "git apply failed (iOs patch set)" && exit 1)'
 
   # Hack: exclude building macOS stuff
   desktop_mac=src/java.desktop/macosx

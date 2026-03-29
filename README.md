@@ -1,6 +1,6 @@
 # angelauramc-openjdk-build 
 
-**This branch is for OpenJDK 17 and 21.**
+**This branch is for OpenJDK 17, 21 and staged Java 25 work.**
 
 Based on [Java for Android](http://openjdk.java.net/projects/mobile/android.html) and [the PojavLauncher variant](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch)
 
@@ -10,12 +10,13 @@ Based on [Java for Android](http://openjdk.java.net/projects/mobile/android.html
 #### Android
 **Note:** We use Ubuntu 24.04 LTS to build our JDKs. Adapt these dependencies to your distribution, it should build fine.
 - Install `autoconf`, `python3`, `python-is-python3`, `unzip`, `zip`, `systemtap-sdt-dev`, `libxtst-dev`, `libasound2-dev`, `libelf-dev`, `libfontconfig1-dev`, `libx11-dev`, `libxext-dev`, `libxrandr-dev`, `libxrender-dev`, `libxtst-dev`, `libxt-dev`.
-- If building JDK 17, install `openjdk-17-jdk`. For 21, `openjdk-21-jdk`.
+- If building JDK 17, install `openjdk-17-jdk`. For 21, `openjdk-21-jdk`. For 25, install `openjdk-25-jdk`.
 - Install Android NDK r27b.
 
 #### iOS
 - Install latest Xcode on your Mac.
-- If building JDK 17, install JDK 17. For 21, install JDK 21.
+- If building JDK 17, install JDK 17. For 21, install JDK 21. For 25, install JDK 25.
+- Java 25 on iOS is currently staged from the Java 21 iOS patch set and should be treated as experimental until the `jdk25u` iOS patch port is verified.
 
 ### Platform and architecture specific environment variables
 <table>
