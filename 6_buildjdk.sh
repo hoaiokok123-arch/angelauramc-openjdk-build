@@ -78,7 +78,8 @@ else
   export BUILD_SYSROOT_CFLAGS="-isysroot ${themacsysroot}"
 
   if [[ "$J316SAP" != "1" ]]; then
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install fontconfig ldid xquartz autoconf
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install fontconfig ldid autoconf
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask xquartz
   fi 
 fi
 
