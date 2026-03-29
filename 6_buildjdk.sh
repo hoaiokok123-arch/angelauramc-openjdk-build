@@ -101,7 +101,7 @@ apply_patch_dir() {
   while IFS= read -r patch; do
     [[ -z "$patch" ]] && continue
     echo "Applying $patch"
-    git apply --3way --reject --whitespace=fix "$patch" || {
+    git apply --3way --whitespace=fix "$patch" || {
       echo "git apply failed (${patch_label})"
       exit 1
     }
